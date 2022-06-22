@@ -33,7 +33,6 @@ function handleClickEvent({ latLng }) {
 }
 
 function addMarker(loc) {
-	console.log('hi')
 	var marker = new google.maps.Marker({
 		position: loc,
 		map: gMap,
@@ -45,7 +44,6 @@ function addMarker(loc) {
 function panTo(lat, lng) {
 	var laLatLng = new google.maps.LatLng(lat, lng)
 	gMap.panTo(laLatLng)
-	console.log(lat, lng)
 	setQueryStringParams(lat, lng)
 }
 
@@ -97,21 +95,3 @@ function renderLocByQueryStringParams() {
 	})
 	panTo(params.lat, params.lng)
 }
-
-// setCarFilter(filterBy)
-
-// function renderFilterByQueryStringParams() {
-// 	// Retrieve data from the current query-params
-// 	const queryStringParams = new URLSearchParams(window.location.search)
-
-// 	const filterBy = {
-// 		vendor: queryStringParams.get('vendor') || '',
-// 		minSpeed: +queryStringParams.get('minSpeed') || 0
-// 	}
-
-// 	if (!filterBy.vendor && !filterBy.minSpeed) return
-
-// 	document.querySelector('.filter-vendor-select').value = filterBy.vendor
-// 	document.querySelector('.filter-speed-range').value = filterBy.minSpeed
-// 	setCarFilter(filterBy)
-// }

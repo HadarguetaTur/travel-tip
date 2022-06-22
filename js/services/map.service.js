@@ -1,8 +1,12 @@
+import { locService } from './loc.service.js'
+
 const API_KEY = 'AIzaSyBql8NtvemaSSebnbC50kSwewJhu7HM7l4' //TODO: Enter your API Key
+
 export const mapService = {
 	initMap,
 	addMarker,
-	panTo
+	panTo,
+	convertCityToCords
 }
 
 var gMap
@@ -15,8 +19,15 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
 			center: { lat, lng },
 			zoom: 15
 		})
-		console.log('Map!', gMap)
+		// gMap.addListener('click', ev => console.log(ev.latLng.lat(), ev.latLng.lng()))
+		gMap.addListener('click', handleClickEvent)
 	})
+}
+
+function handleClickEvent({ latLng }) {
+	addMarker({ lat: latLng.lat(), lng: latLng.lng() })
+	// locService.addLoc('city', latLng.lat(), latLng.lng())
+	convertCordsToCity(latLng.lat(), latLng.lng())
 }
 
 function addMarker(loc) {
@@ -47,10 +58,21 @@ function _connectGoogleApi() {
 	})
 }
 
-convertCityToCords()
-function convertCityToCords() {
-	const url = `https://maps.googleapis.com/maps/api/geocode/json?address=tokyo&key=${API_KEY}`
-	axios.get(url).then(({ data }) => {
-		console.log(data)
-	})
+function convertCityToCords(city) {
+	const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${API_KEY}`
+	axios
+		.get(url)
+		.then(({ data }) => data.results[0].geometry.location)
+		.then(({ lat, lng }) => {
+			panTo(lat, lng)
+			locService.addLoc(city, lat, lng)
+		})
+}
+
+function convertCordsToCity(lat, lng) {
+	const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${API_KEY}`
+	axios
+		.get(url)
+		.then(({ data }) => data.results[0].address_components[2].long_name)
+		.then(city => locService.addLoc(city, lat, lng))
 }

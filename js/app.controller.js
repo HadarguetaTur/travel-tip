@@ -1,6 +1,6 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
-import { weatherService } from './services/weather.service.js'
+// import { weatherService } from './services/weather.service.js'
 
 window.onload = onInit
 window.onAddMarker = onAddMarker
@@ -9,6 +9,7 @@ window.renderLoc = renderLoc
 window.onGetUserPos = onGetUserPos
 window.onSearchCity = onSearchCity
 window.orenderLoc = renderLoc
+window.handleClickEvent=handleClickEvent
 
 
 
@@ -35,7 +36,7 @@ function handleClickEvent({ latLng }) {
 	renderLoc()
 }
 
-// This function provides a Promise API to the callback-based-api of getCurrentPosition
+
 function getPosition() {
 	console.log('Getting Pos')
 	return new Promise((resolve, reject) => {
@@ -79,6 +80,7 @@ function onSearchCity(ev) {
 
 
 function renderLoc() {
+	debugger
 	var sec = document.querySelector('.loc-save')
 	sec.innerHTML = ''
 	const prmLoc = locService.getLocs().then((locs) =>

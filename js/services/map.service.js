@@ -1,6 +1,6 @@
 import { locService } from './loc.service.js'
 
-const API_KEY = 'AIzaSyBql8NtvemaSSebnbC50kSwewJhu7HM7l4' //TODO: Enter your API Key
+const API_KEY = 'AIzaSyBJjAyWTrWXXBwMp1Azjy0aCTETJMrULAI' //TODO: Enter your API Key
 
 export const mapService = {
     initMap,
@@ -55,16 +55,16 @@ function addMarker(loc) {
     return marker
 }
 
-function panTo(lat, lng) {
-    var laLatLng = new google.maps.LatLng(lat, lng)
-    gMap.panTo(laLatLng)
-	var marker = new google.maps.Marker({
-		position: loc,
-		map: gMap,
-		title: 'Hello World!'
-	})
-	return marker
-}
+// function panTo(lat, lng) {
+//     // var laLatLng = new google.maps.LatLng(lat, lng)
+//     // gMap.panTo(laLatLng)
+// 	var marker = new google.maps.Marker({
+// 		position: loc,
+// 		map: gMap,
+// 		title: 'Hello World!'
+// 	})
+// 	return marker
+// }
 
 function panTo(lat, lng) {
 	var laLatLng = new google.maps.LatLng(lat, lng)

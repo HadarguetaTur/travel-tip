@@ -1,4 +1,5 @@
 import { storageService } from './storage.service.js'
+import { weatherService } from './services/weather.service.js'
 
 const STORAGE_KEY = 'locDB'
 

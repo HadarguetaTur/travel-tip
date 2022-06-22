@@ -1,4 +1,7 @@
+import { locService } from './loc.service.js'
+
 const API_KEY = 'AIzaSyBql8NtvemaSSebnbC50kSwewJhu7HM7l4' //TODO: Enter your API Key
+
 export const mapService = {
     initMap,
     addMarker,
@@ -18,7 +21,8 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
 			center: { lat, lng },
 			zoom: 15
 		})
-		console.log('Map!', gMap)
+		// gMap.addListener('click', ev => console.log(ev.latLng.lat(), ev.latLng.lng()))
+		gMap.addListener('click', handleClickEvent)
 	})
 }
 
@@ -65,5 +69,4 @@ function _connectGoogleApi() {
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
 }
-
 

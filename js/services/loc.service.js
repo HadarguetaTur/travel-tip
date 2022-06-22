@@ -10,17 +10,13 @@ export const locService = {
 	deleteLoc
 }
 
-const gLocs = [
-	{ name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
-	{ name: 'Neveragain', lat: 32.047201, lng: 34.832581 }
-]
+const gLocs = []
 
 function getLocs() {
-	//? why??
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
 			resolve(gLocs)
-		}, 2000)
+		}, 200)
 	})
 }
 
@@ -33,12 +29,13 @@ function addLoc(name, lat, lng, weather = 'nice') {
 		weather
 	}
 	gLocs.push(pos)
-	storageService.save(STORAGE_KEY, gLocs)
+	storageService.save(STORAGE_KEY, pos)
 }
 
 function loadSavedLocations() {
 	//load loc from storage
 	gLocs = storageService.load(STORAGE_KEY) || []
+	
 }
 
 function getLocationById(id) {

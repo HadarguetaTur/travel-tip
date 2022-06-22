@@ -1,5 +1,4 @@
-
-
+const API_KEY = 'AIzaSyBql8NtvemaSSebnbC50kSwewJhu7HM7l4' //TODO: Enter your API Key
 export const mapService = {
     initMap,
     addMarker,
@@ -9,20 +8,18 @@ export const mapService = {
 
 }
 
-var gMap;
+var gMap
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
-    console.log('InitMap');
-    return _connectGoogleApi()
-        .then(() => {
-            console.log('google available');
-            gMap = new google.maps.Map(
-                document.querySelector('#map'), {
-                center: { lat, lng },
-                zoom: 15
-            })
-            console.log('Map!', gMap);
-        })
+	console.log('InitMap')
+	return _connectGoogleApi().then(() => {
+		console.log('google available')
+		gMap = new google.maps.Map(document.querySelector('#map'), {
+			center: { lat, lng },
+			zoom: 15
+		})
+		console.log('Map!', gMap)
+	})
 }
 
 function addWindowsToMap() {
@@ -41,17 +38,18 @@ function getMap() {
 }
 
 function addMarker(loc) {
-    var marker = new google.maps.Marker({
-        position: loc,
-        map: gMap,
-        title: 'Hello World!'
-    });
-    return marker;
+	console.log('hi')
+	var marker = new google.maps.Marker({
+		position: loc,
+		map: gMap,
+		title: 'Hello World!'
+	})
+	return marker
 }
 
 function panTo(lat, lng) {
-    var laLatLng = new google.maps.LatLng(lat, lng);
-    gMap.panTo(laLatLng);
+	var laLatLng = new google.maps.LatLng(lat, lng)
+	gMap.panTo(laLatLng)
 }
 
 function _connectGoogleApi() {

@@ -26,8 +26,9 @@ function addLoc(name, lat, lng, weather = 'nice') {
 		name,
 		lat,
 		lng,
-		weather
+		weather: weatherService.getWeather(lat, lng).then(({ temp, feels_like }) => ({ temp, feels_like }))
 	}
+	console.log(pos)
 	gLocs.push(pos)
 	storageService.save(STORAGE_KEY, pos)
 }

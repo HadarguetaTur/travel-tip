@@ -1,5 +1,6 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
+import { weatherService } from './services/weather.service.js'
 
 window.onload = onInit
 window.onAddMarker = onAddMarker
@@ -24,7 +25,7 @@ function onInit() {
 }
 
 function addEventLis() {
-	const map = mapService.getMap()
+	const map = mapService.MapBack()
 	map.addListener("click", handleClickEvent)
 }
 

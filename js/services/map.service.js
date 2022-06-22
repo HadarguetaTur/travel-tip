@@ -54,19 +54,3 @@ function convertCityToCords() {
 		console.log(data)
 	})
 }
-
-//maps.googleapis.com/maps/api/geocode/json?holon&key=AIzaSyBql8NtvemaSSebnbC50kSwewJhu7HM7l4
-
-// convertToCordsTest()
-// function convertToCordsTest() {
-// 	console.log('hi')
-// 	fetch('https://maps.googleapis.com/maps/api/js?key=AIzaSyBql8NtvemaSSebnbC50kSwewJhu7HM7l4')
-// 		.then(data => data.json())
-// 		.then(console.log)
-// }
-
-// convertToCords()
-// function convertToCords() {
-// const geoCoder = new google.maps.Geocoder()
-// console.log(geoCoder)
-// }

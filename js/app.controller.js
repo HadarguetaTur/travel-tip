@@ -9,13 +9,13 @@ window.onGetUserPos = onGetUserPos
 window.onSearchCity = onSearchCity
 
 function onInit() {
-    mapService.initMap()
-        .then(() => {  
-            console.log('Map is ready');
-            addMapEventListeners()
-        })
-        .catch(() => console.log('Error: cannot init map'));
-    
+	mapService
+		.initMap()
+		.then(() => {
+			console.log('Map is ready')
+			addMapEventListeners()
+		})
+		.catch(() => console.log('Error: cannot init map'))
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -25,22 +25,6 @@ function getPosition() {
 		navigator.geolocation.getCurrentPosition(resolve, reject)
 	})
 }
-
-
-function addMapEventListeners() {
-    console.log('hay')
-    const map = mapService.getMap();
-    map.addListener("click", mapsMouseEvent => {
-        console.log(map)
-        let clickedPos = mapsMouseEvent.latLng;
-        addWindowsToMap(clickedPos)
-    })
-}
-
-
-
-
-
 
 function onAddMarker() {
 	console.log('Adding a marker')

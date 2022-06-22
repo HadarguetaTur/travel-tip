@@ -17,15 +17,18 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
 		console.log('google available')
 		gMap = new google.maps.Map(document.querySelector('#map'), {
 			center: { lat, lng },
-			zoom: 15
+			zoom: 10
 		})
 		// gMap.addListener('click', ev => console.log(ev.latLng.lat(), ev.latLng.lng()))
 		gMap.addListener('click', handleClickEvent)
+		gMap.addListener('click')
+		renderLocByQueryStringParams()
 	})
 }
 
 function handleClickEvent({ latLng }) {
 	addMarker({ lat: latLng.lat(), lng: latLng.lng() })
+
 	convertCordsToCity(latLng.lat(), latLng.lng())
 }
 
@@ -42,6 +45,8 @@ function addMarker(loc) {
 function panTo(lat, lng) {
 	var laLatLng = new google.maps.LatLng(lat, lng)
 	gMap.panTo(laLatLng)
+	console.log(lat, lng)
+	setQueryStringParams(lat, lng)
 }
 
 function _connectGoogleApi() {
@@ -64,6 +69,7 @@ function convertCityToCords(city) {
 		.then(({ data }) => data.results[0].geometry.location)
 		.then(({ lat, lng }) => {
 			panTo(lat, lng)
+
 			locService.addLoc(city, lat, lng)
 		})
 }
@@ -75,3 +81,37 @@ function convertCordsToCity(lat, lng) {
 		.then(({ data }) => data.results[0].address_components[2].long_name)
 		.then(city => locService.addLoc(city, lat, lng))
 }
+
+function setQueryStringParams(lat, lng) {
+	if (!lat) lat = -18.7669
+	if (!lng) lng = 46.8691
+	const queryStringParams = `?lat=${lat}&lng=${lng}`
+	const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}${queryStringParams}`
+	window.history.pushState({ path: newUrl }, '', newUrl)
+}
+
+function renderLocByQueryStringParams() {
+	console.log('hi')
+	const params = new Proxy(new URLSearchParams(window.location.search), {
+		get: (searchParams, prop) => searchParams.get(prop)
+	})
+	panTo(params.lat, params.lng)
+}
+
+// setCarFilter(filterBy)
+
+// function renderFilterByQueryStringParams() {
+// 	// Retrieve data from the current query-params
+// 	const queryStringParams = new URLSearchParams(window.location.search)
+
+// 	const filterBy = {
+// 		vendor: queryStringParams.get('vendor') || '',
+// 		minSpeed: +queryStringParams.get('minSpeed') || 0
+// 	}
+
+// 	if (!filterBy.vendor && !filterBy.minSpeed) return
+
+// 	document.querySelector('.filter-vendor-select').value = filterBy.vendor
+// 	document.querySelector('.filter-speed-range').value = filterBy.minSpeed
+// 	setCarFilter(filterBy)
+// }

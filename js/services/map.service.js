@@ -3,12 +3,10 @@ import { locService } from './loc.service.js'
 const API_KEY = 'AIzaSyBql8NtvemaSSebnbC50kSwewJhu7HM7l4' //TODO: Enter your API Key
 
 export const mapService = {
-    initMap,
-    addMarker,
-    panTo,
-    getMap,
-    addWindowsToMap,
-
+	initMap,
+	addMarker,
+	panTo,
+	convertCityToCords
 }
 
 var gMap
@@ -26,19 +24,9 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
 	})
 }
 
-function addWindowsToMap() {
-
-    google.maps.event.addListener(marker, "click", function (event) {
-        var latitude = event.latLng.lat();
-        var longitude = event.latLng.lng();
-        console.log(latitude + ', ' + longitude);
-    }); 
-
-
-}
-
-function getMap() {
-    return gMap
+function handleClickEvent({ latLng }) {
+	addMarker({ lat: latLng.lat(), lng: latLng.lng() })
+	convertCordsToCity(latLng.lat(), latLng.lng())
 }
 
 function addMarker(loc) {
@@ -57,16 +45,33 @@ function panTo(lat, lng) {
 }
 
 function _connectGoogleApi() {
-    if (window.google) return Promise.resolve()
-    const API_KEY = 'AIzaSyBJjAyWTrWXXBwMp1Azjy0aCTETJMrULAI';
-    var elGoogleApi = document.createElement('script');
-    elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
-    elGoogleApi.async = true;
-    document.body.append(elGoogleApi);
+	if (window.google) return Promise.resolve()
+	var elGoogleApi = document.createElement('script')
+	elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`
+	elGoogleApi.async = true
+	document.body.append(elGoogleApi)
 
-    return new Promise((resolve, reject) => {
-        elGoogleApi.onload = resolve;
-        elGoogleApi.onerror = () => reject('Google script failed to load')
-    })
+	return new Promise((resolve, reject) => {
+		elGoogleApi.onload = resolve
+		elGoogleApi.onerror = () => reject('Google script failed to load')
+	})
 }
 
+function convertCityToCords(city) {
+	const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${API_KEY}`
+	axios
+		.get(url)
+		.then(({ data }) => data.results[0].geometry.location)
+		.then(({ lat, lng }) => {
+			panTo(lat, lng)
+			locService.addLoc(city, lat, lng)
+		})
+}
+
+function convertCordsToCity(lat, lng) {
+	const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${API_KEY}`
+	axios
+		.get(url)
+		.then(({ data }) => data.results[0].address_components[2].long_name)
+		.then(city => locService.addLoc(city, lat, lng))
+}

@@ -8,11 +8,10 @@ window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 
 function onInit() {
-
     mapService.initMap()
-        .then(() => {
-            addMapEventListeners()
+        .then(() => {  
             console.log('Map is ready');
+            addMapEventListeners()
         })
         .catch(() => console.log('Error: cannot init map'));
     
@@ -29,13 +28,18 @@ function getPosition() {
 
 
 function addMapEventListeners() {
+    console.log('hay')
     const map = mapService.getMap();
     map.addListener("click", mapsMouseEvent => {
+        console.log(map)
         let clickedPos = mapsMouseEvent.latLng;
-        console.log(clickedPos)
-
+        addWindowsToMap(clickedPos)
     })
 }
+
+
+
+
 
 
 function onAddMarker() {

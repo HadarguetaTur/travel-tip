@@ -3,7 +3,10 @@
 export const mapService = {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    getMap,
+    addWindowsToMap,
+
 }
 
 var gMap;
@@ -22,6 +25,21 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
         })
 }
 
+function addWindowsToMap() {
+
+    google.maps.event.addListener(marker, "click", function (event) {
+        var latitude = event.latLng.lat();
+        var longitude = event.latLng.lng();
+        console.log(latitude + ', ' + longitude);
+    }); 
+
+
+}
+
+function getMap() {
+    return gMap
+}
+
 function addMarker(loc) {
     var marker = new google.maps.Marker({
         position: loc,
@@ -38,7 +56,7 @@ function panTo(lat, lng) {
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = 'AIzaSyBJjAyWTrWXXBwMp1Azjy0aCTETJMrULAI'; 
+    const API_KEY = 'AIzaSyBJjAyWTrWXXBwMp1Azjy0aCTETJMrULAI';
     var elGoogleApi = document.createElement('script');
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
     elGoogleApi.async = true;
@@ -49,3 +67,5 @@ function _connectGoogleApi() {
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
 }
+
+
